@@ -1,0 +1,59 @@
+public class Solution {
+    public int util(int a[], int b[]) {
+        int xi = a[0];
+        int yi = a[1];
+        int xj = b[0];
+        int yj = b[1];
+        int steps = 0;
+        while(xi!= xj || yi != yj){
+        if(xj > xi && yj > yi) { //ne
+            xi++;
+            yi++;
+            steps++;
+        }
+        else if(xj > xi && yj < yi){ //se
+            xi++;
+            yi--;
+            steps++;
+        }
+        else if(xj < xi && yj < yi){ // sw
+            xi--;
+            yi--;
+            steps++;
+        }
+        else if(xj < xi && yj > yi){ // nw
+            xi--;
+            yi++;
+            steps++;
+        }
+        else if(xj == xi && yj > yi){ //n
+            steps += Math.abs(yj-yi);
+            yi = yj;
+        }
+        else if(yi == yj && xj > xi) { //e
+            steps += Math.abs(xj-xi);
+            xi = xj;
+        }
+        else if(xj == xi && yj < yi){ // s
+            steps += Math.abs(yj-yi);
+            yi = yj;
+        }
+        else if(yi == yj && xj < xi) { //w
+            steps += Math.abs(xj-xi);
+            xi = xj;
+        }}
+        return steps;
+    }
+    public int coverPoints(int[] A, int[] B) {
+        int n = A.length;
+        if(n < 2) return 0;
+        int ans = 0;
+        int src[] = {A[0],B[0]};
+        for(int i=1;i<n;i++){
+            int dest[] = {A[i],B[i]}; 
+            ans += util(src, dest);
+            src = dest;
+        }
+        return ans;
+    }
+}
