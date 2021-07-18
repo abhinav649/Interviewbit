@@ -1,0 +1,20 @@
+public class Solution {
+    public int solve(int[] A, int B) {
+        int n = A.length;
+        int p =0;
+        for(int num : A) p+=num;
+        int sum = 0;
+        int ans = Integer.MIN_VALUE;
+        int len = n-B;
+        for(int i=0;i<len;i++){
+            sum += A[i];
+        }
+        ans = Math.max(ans, p-sum);
+        for(int i=1;i<=n-len;i++){
+            sum-=A[i-1];
+            sum+=A[i-1+len];
+            ans = Math.max(p-sum, ans);
+        }
+        return ans;
+    }
+}
