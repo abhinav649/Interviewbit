@@ -1,0 +1,29 @@
+public class Solution {
+    public int solve(int[] A, int B) {
+        int n = A.length;
+        if(n==0) return 0;
+        if(B<=0) return -1;
+        int dp[] = new int[n];
+        for(int i=0;i<n;i++){
+            if(A[i]==0) continue;
+            int left = i-B+1;
+            int right = i+B-1;
+            if(left < 0) left = 0;
+            if(right > n-1) right = n-1;
+            dp[left] = Math.max(dp[left],right);
+        }
+        for(int i=0;i<n;i++) System.out.print(dp[i]+" ");
+        System.out.println();
+        int p = dp[0];
+        int t = dp[0];
+        int cnt  =1;
+        for(int i = 0;i < n-1;i++) {
+            p = Math.max(p, dp[i]);
+            if(i==t){
+                cnt++;
+                t = p;
+            }
+        }
+        return t>=n-1?cnt:-1;
+    }
+}
