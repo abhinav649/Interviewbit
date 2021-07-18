@@ -1,0 +1,29 @@
+public class Solution {
+    public int[] flip(String A) {
+        int n = A.length();
+        int arr[]= new int[n];
+        for(int i=0;i<n;i++) {
+            if(A.charAt(i)=='0') arr[i] = 1;
+            else arr[i] = -1;
+        }
+        int ts = 0;
+        int te = 0;
+        int s = -1;
+        int e = -1;
+        int ms = 0;
+        for(int i=0;i<n;i++){
+            if(te + arr[i] < 0){
+                ms = i+1;
+                te = 0;
+            }
+            else te += arr[i];
+            if(te > ts){
+                ts = te;
+                s = ms;
+                e = i;
+            }
+        }
+        if(s == -1) return new int[]{};
+        else return new int[]{s+1,e+1};
+    }
+}
