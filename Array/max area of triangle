@@ -1,0 +1,56 @@
+public class Solution {
+    HashMap<Character,Integer> map = new HashMap<>();
+    
+    public int util(int left[] , int right[], int up[][], int down[][], int m, int n) {
+        double ans = 0;
+        for(int i=0;i<n;i++){
+            for(int x=0;x<3;x++){
+                for(int y=0;y<3;y++){
+                    int z = 3-x-y;
+                    if(x!=y && up[x][i]!=Integer.MAX_VALUE && 
+                    down[y][i]!= Integer.MIN_VALUE && left[z]!= Integer.MAX_VALUE){
+                        ans = Math.max(ans,((double)1/(double)2)*(double)(down[y][i]-up[x][i]+1)*(double)(i-left[z]+1));
+                    }
+                    if(x!=y && up[x][i]!=Integer.MAX_VALUE && 
+                    down[y][i]!= Integer.MIN_VALUE && left[z]!= Integer.MAX_VALUE){
+                        ans = Math.max(ans,((double)1/(double)2)*(double)(down[y][i]-up[x][i]+1)*(double)(right[z]-i+1));
+                    }
+                }
+            }
+        }ans = Math.ceil(ans);
+        return (int)ans;
+    }
+    public int solve(String[] A) {
+        int m = A.length;
+        if(m<2) return 0;
+        int n = A[0].length();
+        if(n<2) return 0;
+        int left[] = new int[3];
+        int right[] = new int[3];
+        Arrays.fill(left,Integer.MAX_VALUE);
+        Arrays.fill(right,Integer.MIN_VALUE);
+        int up[][] = new int[3][n];
+        int down[][] = new int[3][n];
+        map.put('r',0);
+        map.put('g',1);
+        map.put('b',2);
+        for(int i=0;i<3;i++){
+            Arrays.fill(up[i],Integer.MAX_VALUE);
+            Arrays.fill(down[i],Integer.MIN_VALUE);
+        }
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++){
+                left[map.get(A[i].charAt(j))] = Math.min(left[map.get(A[i].charAt(j))],j);
+                right[map.get(A[i].charAt(j))] = Math.max(right[map.get(A[i].charAt(j))],j);
+            }
+        }
+        for(int j=0;j<n;j++){
+            for(int i=0;i<m;i++){
+                //System.out.println(j+" "+i);
+                up[map.get(A[i].charAt(j))][j] = Math.min(i, up[map.get(A[i].charAt(j))][j]);
+                down[map.get(A[i].charAt(j))][j] = Math.max(i, down[map.get(A[i].charAt(j))][j]);
+            }
+        }
+        return util(left, right, up, down, m, n);
+    }
+}
